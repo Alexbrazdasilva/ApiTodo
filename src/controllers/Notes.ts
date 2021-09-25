@@ -1,21 +1,16 @@
-import { Request, Response} from 'express'
+import { Request, Response } from 'express'
 
 function Notes () {
-  
-  function getAllNotes(req: Request, res: Response) {
-    res
-      .status(200)
-      .json({
-        message: 'Verifique o console...'
-      })
+  function getAllNotes (req: Request, res: Response) {
+    res.status(200).json({
+      message: 'Verifique o console...'
+    })
   }
 
-  function getOneNote(req: Request, res: Response) {
-    res
-      .status(200)
-      .json({
-        message: `Aqui vai um exemplo de nota...`,
-      })
+  function getOneNote (req: Request, res: Response) {
+    res.status(200).json({
+      message: 'Aqui vai um exemplo de nota...'
+    })
   }
 
   async function handle (req: Request, res: Response) {
@@ -24,11 +19,10 @@ function Notes () {
       case 'one-note':
         return getOneNote(req, res)
       default:
-        return getAllNotes(req, res)     
+        return getAllNotes(req, res)
     }
-
   }
-  return { 
+  return {
     handle
   }
 }
