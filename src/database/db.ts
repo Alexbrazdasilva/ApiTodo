@@ -1,32 +1,27 @@
-import { Sequelize } from 'sequelize'
 import 'dotenv/config'
+import { createConnection, Connection } from 'typeorm'
+import { Notes } from '@/models/Notes'
 
 class Database {
   /**
-   * @description Try to create a database connection
-   * @return {*}  {Promise<Sequelize>}
+   * @description Try to create a database connection and 
+   * define entities of tables
+   * @return {*}  {Promise<Connection | void>}
    * @memberof Database
    */
-  async connect(): Promise<Sequelize>{
-    return new Sequelize(process.env.DB_URL as string)
-  }
-  /**
-   *
-   * @description Verify status of connection with database
-   * @return {*}  {Promise<boolean>}
-   * @memberof Database
-   */
-  async verifyConnectionStatus(): Promise<boolean> {
+  async connect(): Promise<Connection|void>{
     try {
-      (await this.connect()).authenticate
-      return true
+      return await createConnection({
+        type: 'mysql',
+        url: process.env.DB_URL as string,
+        synchronize: true,
+        entities: [Notes]
+      })
     } catch (err) {
       console.error(err)
-      return false
     }
   }
 }
 
 const database = new Database()
-
 export { database }
