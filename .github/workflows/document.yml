@@ -1,40 +1,48 @@
-# This is a basic workflow to help you get started with Actions
+name: Generate changelog
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the master branch
+  # Trigger the workflow on push or pull request,
+  # but only for the main branch
   push:
-    branches: [ master ]
+    branches:
+      - master
+          # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   pull_request:
-    branches: [ master ]
+    branches:
+      - master
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  run-linters:
+    name: Run linters
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      - name: TypeScript Linter Action
-        # You may pin to the exact commit or the version.
-        # uses: AntonKornus/TypeScript-Linter@c76df0ed4b1f5e93f202195ebd6d03bfe12fe837
-        uses: AntonKornus/TypeScript-Linter@1.0.0
+      - name: Check out Git repository
+        uses: actions/checkout@v2
+
+      # Install your linters here
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
         with:
-          # Set your default working directory
-          folder: .
-      - name: Auto Changelog
-        # You may pin to the exact commit or the version.
-        # uses: ardalanamini/auto-changelog@6edbc48bf09f362c278bcb72a8453a1e4ba5850b
-        uses: ardalanamini/auto-changelog@v1.1.0
+          eslint: true
+          prettier: true
+  document:
+    name: Run changelog generator
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Generate changelog
+        uses: ScottBrenner/generate-changelog-action@v1.3.3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        id: Changelog
         with:
-          # Github token
-          token: ${{ secrets.GITHUB_TOKEN }}
-          # Exclude selected commit types (comma separated)
-          exclude:  comma separated
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            ${{ steps.Changelog.outputs.changelog }}
+          draft: false
+          prerelease: false
