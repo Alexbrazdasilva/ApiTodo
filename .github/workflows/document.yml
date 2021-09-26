@@ -28,7 +28,7 @@ jobs:
         uses: AntonKornus/TypeScript-Linter@1.0.0
         with:
           # Set your default working directory
-          folder: ./src
+          folder: .
       - name: Auto Changelog
         # You may pin to the exact commit or the version.
         # uses: ardalanamini/auto-changelog@6edbc48bf09f362c278bcb72a8453a1e4ba5850b
