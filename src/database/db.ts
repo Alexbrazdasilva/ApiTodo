@@ -1,6 +1,6 @@
 import 'dotenv/config'
 import { createConnection, Connection } from 'typeorm'
-import { Notes } from '@/models/Notes'
+import { Notes, Users } from '@/models/index'
 
 class Database {
   /**
@@ -15,7 +15,7 @@ class Database {
         type: 'mysql',
         url: process.env.DB_URL as string,
         synchronize: true,
-        entities: [Notes]
+        entities: [Notes, Users]
       })
     } catch (err) {
       console.error(err)
