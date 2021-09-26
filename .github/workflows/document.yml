@@ -1,0 +1,40 @@
+# This is a basic workflow to help you get started with Actions
+
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: TypeScript Linter Action
+        # You may pin to the exact commit or the version.
+        # uses: AntonKornus/TypeScript-Linter@c76df0ed4b1f5e93f202195ebd6d03bfe12fe837
+        uses: AntonKornus/TypeScript-Linter@1.0.0
+        with:
+          # Set your default working directory
+          folder: ./src
+      - name: Auto Changelog
+        # You may pin to the exact commit or the version.
+        # uses: ardalanamini/auto-changelog@6edbc48bf09f362c278bcb72a8453a1e4ba5850b
+        uses: ardalanamini/auto-changelog@v1.1.0
+        with:
+          # Github token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # Exclude selected commit types (comma separated)
+          exclude:  comma separated
