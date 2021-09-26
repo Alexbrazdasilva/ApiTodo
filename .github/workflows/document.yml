@@ -22,8 +22,6 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12
-      - name: Clear cache node modules
-        run: npm cache clean
       - name: Install Node.js dependencies
         run: npm ci
       - name: Run eslint
