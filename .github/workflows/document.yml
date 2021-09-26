@@ -25,7 +25,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm install
-      - name: Run eslint
-        run: npx eslint .
-      - name: Run prettier
-        run: npx prettier --write .
+      - name: ESLint (JS/TS) Action 
+        # You may pin to the exact commit or the version.
+        # uses: iCrawl/action-eslint@ff2a58dcbc1aaec51815d58e8bf70962c4f2b557
+        uses: iCrawl/action-eslint@v1
+          
