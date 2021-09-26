@@ -22,6 +22,7 @@
     "eslint-plugin-import": "^2.24.2",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
+    "eslint-plugin-unused-imports": "^1.1.5",
     "git-cz": "^4.7.6",
     "prettier": "^2.4.1",
     "sequelize-cli": "^6.2.0",
