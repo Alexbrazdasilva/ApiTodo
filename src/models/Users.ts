@@ -1,8 +1,15 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm'
-
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  OneToMany,
+  UpdateDateColumn,
+  CreateDateColumn,
+} from 'typeorm'
+import { Notes } from './index'
 @Entity()
 export class Users {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id!: number
 
   @Column()
@@ -13,4 +20,13 @@ export class Users {
 
   @Column()
   password!: string
+
+  @OneToMany(() => Notes, (notes) => notes.author, {cascade: true, eager: true})
+  notes?: string[]
+
+  @CreateDateColumn()
+  created_at!: Date
+
+  @UpdateDateColumn()
+  update_at!: Date
 }
