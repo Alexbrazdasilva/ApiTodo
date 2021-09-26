@@ -14,15 +14,18 @@ jobs:
   run-linters:
     name: Run linters
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node: [ '12', '14', '16' ]
 
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
-          node-version: '14'
+          node-version: ${{ matrix.node }}
       - run: npm install
       - name: Run eslint
-        run: npx eslint . --ext .ts
+        run: npx eslint .
       - name: Run prettier
         run: npx prettier --write .
