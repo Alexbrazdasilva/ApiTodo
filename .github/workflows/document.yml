@@ -1,4 +1,4 @@
-name: Verify quality of code and generate changelog
+name: Linter code
 
 on:
   # Trigger the workflow on push or pull request,
@@ -6,9 +6,6 @@ on:
   push:
     branches:
       - master
-          # Sequence of patterns matched against refs/tags
-    tags:
-      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
   pull_request:
     branches:
       - master
@@ -26,28 +23,10 @@ jobs:
         with:
           node-version: 12
       - name: Clear cache node modules
-        run: npm cache clean --force
+        run: npm cache clean
       - name: Install Node.js dependencies
         run: npm ci
-      - name: Run linters
-        uses: wearerequired/lint-action@v1
-        with:
-          eslint: true
-          prettier: true
-  document:
-    name: Run changelog generator
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Generate changelog
-        uses: ScottBrenner/generate-changelog-action@v1.3.3
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        id: Changelog
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            ${{ steps.Changelog.outputs.changelog }}
-          draft: false
-          prerelease: false
+      - name: Run eslint
+        run: npx eslint . --ext .ts
+      - name: Run prettier
+        run: npx prettier --write .
