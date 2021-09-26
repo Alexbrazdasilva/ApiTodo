@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [ '12', '14', '16' ]
+        node: ['14', '16']
 
     steps:
       - name: Check out Git repository
@@ -25,8 +25,8 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: npm install
-      - name: ESLint (JS/TS) Action 
-        # You may pin to the exact commit or the version.
-        # uses: iCrawl/action-eslint@ff2a58dcbc1aaec51815d58e8bf70962c4f2b557
-        uses: iCrawl/action-eslint@v1
-          
+      - name: Run linters
+        uses: wearerequired/lint-action@v1
+        with:
+          eslint: true
+          prettier: true
