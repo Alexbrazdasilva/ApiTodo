@@ -1,4 +1,4 @@
-name: Generate changelog
+name: Verify quality of code and generate changelog
 
 on:
   # Trigger the workflow on push or pull request,
@@ -21,9 +21,12 @@ jobs:
     steps:
       - name: Check out Git repository
         uses: actions/checkout@v2
-
-      # Install your linters here
-
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14
+      - name: Install Node.js dependencies
+        run: npm ci
       - name: Run linters
         uses: wearerequired/lint-action@v1
         with:
