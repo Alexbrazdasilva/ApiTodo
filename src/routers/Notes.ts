@@ -1,9 +1,11 @@
 import { Router } from 'express'
-import { handle as Notes } from '@/controllers/Notes'
+import Notes from '@/controllers/Notes/Notes'
 import { LogRequest } from '@/middlewares/LogRequests'
 
 const router = Router()
+router.post('/notes', LogRequest, Notes.saveNote)
+router.get('/notes', LogRequest, Notes.getAllNotes)
+router.get('/notes/:id', LogRequest, Notes.getOneNote)
+router.delete('/notes', LogRequest, Notes.deleteNote)
 
-router.post('/notes', LogRequest, Notes)
-
-export { router };
+export { router }

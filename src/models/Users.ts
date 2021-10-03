@@ -21,7 +21,10 @@ export class Users {
   @Column()
   password!: string
 
-  @OneToMany(() => Notes, (notes) => notes.author, {cascade: true, eager: true})
+  @OneToMany(() => Notes, (notes) => notes.author, {
+    cascade: true,
+    eager: true,
+  })
   notes?: string[]
 
   @CreateDateColumn()

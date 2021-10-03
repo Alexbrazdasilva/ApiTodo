@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start:dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only src/index.ts",
+    "typeorm": "npx ts-node ./node_modules/typeorm/cli.js",
     "commit": "git-cz"
   },
   "author": "",
