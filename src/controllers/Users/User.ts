@@ -34,11 +34,11 @@ class Users {
         { expiresIn: '1d' }
       )
       
-      const { id, email: mail, name } = user
+      const { email: mail, name } = user
       
       return res.setHeader('Authorization-token', token).json({
         message: 'Authorized authentication',
-        user: { id, name, mail },
+        user: { id: req.userId, name, mail },
         token,
       })
     } catch (err) {
