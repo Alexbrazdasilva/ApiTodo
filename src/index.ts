@@ -1,10 +1,12 @@
 import express, { Application } from 'express'
 import { default as routers } from './routers/index'
+import cors from 'cors'
 import 'reflect-metadata'
 import '@/database/db'
 
 const app: Application = express()
 
+app.use(cors())
 app.use(express.json({strict: false}))
 app.use(express.urlencoded({extended: true, limit: '50mb'}))
 app.use(routers)

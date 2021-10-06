@@ -23,7 +23,8 @@ class Users {
         return res.json({ message: 'Unauthorized authentication' }).status(401)
       }
 
-      const isValidPass = compare(password, user.password)
+      const isValidPass = await compare(password, user.password)
+
       if (!isValidPass) {
         return res.json({ message: 'Unauthorized authentication' }).status(401)
       }

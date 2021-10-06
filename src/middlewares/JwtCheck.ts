@@ -7,6 +7,7 @@ export async function jwtCheck(
   res: Response,
   next: NextFunction
 ): Promise<Response | void> {
+
   if(!req.headers) {
     return res.json({ message: 'Unauthorized request', code: 401 }).status(401)
   }
