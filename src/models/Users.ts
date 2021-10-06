@@ -5,8 +5,11 @@ import {
   OneToMany,
   UpdateDateColumn,
   CreateDateColumn,
+  BeforeInsert,
+  BeforeUpdate
 } from 'typeorm'
 import { Notes } from './index'
+import { hashSync } from 'bcryptjs'
 @Entity()
 export class Users {
   @PrimaryGeneratedColumn('uuid')
@@ -19,7 +22,7 @@ export class Users {
   email!: string
 
   @Column()
-  password!: string
+  password: string
 
   @OneToMany(() => Notes, (notes) => notes.author, {
     cascade: true,
@@ -32,4 +35,10 @@ export class Users {
 
   @UpdateDateColumn()
   update_at!: Date
+
+  @BeforeInsert()
+  @BeforeUpdate()
+  hashPassword():void {
+    this.password = hashSync(this.password, 8)
+  }
 }

@@ -18,11 +18,12 @@ class Notes {
 
       return notes
         ? res.json({ notes, status: 200 }).status(200)
-        : res.json({ message: 'Não há!', status: 200 }).status(200)
+        : res.json({ message: 'There are no notes', status: 204 }).status(204)
     } catch (err) {
       console.error('Erro no processamento da requisição:\n', err)
     }
   }
+
   /**
    *
    *
@@ -33,15 +34,19 @@ class Notes {
    */
   async getOneNote(req: Request, res: Response): Promise<Response | void> {
     try {
-      res
-        .json({
-          message: 'Aqui vai um exemplo de nota...',
-        })
-        .status(200)
+      const { id } = req.params
+
+      const repositoryNotes = getRepository(EntityNotes)
+      const note = await repositoryNotes.findOne({ where: { id } })
+
+      return note
+        ? res.json({ note, status: 200 }).status(200)
+        : res.json({ message: 'There are no note', status: 204 }).status(204)
     } catch (err) {
       console.error('Erro ao processar requisição:\n', err)
     }
   }
+
   /**
    *
    *
@@ -52,16 +57,36 @@ class Notes {
    */
   async saveNote(req: Request, res: Response): Promise<Response | void> {
     try {
-      return res
-        .json({
-          message: 'Nota criada com sucesso',
-          status: 201,
-        })
-        .status(201)
+      const { title, note, tag, author } = req.body
+      const repositoryNotes = getRepository(EntityNotes)
+      const notes = await repositoryNotes.insert({
+        author,
+        note,
+        title,
+        tag,
+      })
+
+      return notes
+        ? res
+            .json({ message: 'The note was saved successfully', status: 201 })
+            .status(201)
+        : res
+            .json({
+              message: 'There was an error trying to save the note',
+              status: 401,
+            })
+            .status(401)
     } catch (err) {
       console.error('Erro ao processar requisição:\n', err)
+      res
+        .json({
+          message: 'An error occurred while trying to process your request',
+          status: 400,
+        })
+        .status(400)
     }
   }
+
   /**
    *
    *
@@ -72,11 +97,21 @@ class Notes {
    */
   async deleteNote(req: Request, res: Response): Promise<Response | void> {
     try {
-      res
+      const { id } = req.body
+      const repositoryNotes = getRepository(EntityNotes)
+      const notes = await repositoryNotes.delete({ id })
+      
+      return !notes.raw.length !== true && notes.affected === 1
+      ? res
         .json({
-          message: 'Nota deletada',
+          message: 'Deleted',
         })
-        .status(200)
+        .status(201)
+      : res.json({
+        message: 'Erro ao tentar deletar nota',
+        status: 400
+      })
+      .status(400)
     } catch (err) {
       console.error('Erro ao processar requisição:\n,', err)
     }
